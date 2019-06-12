@@ -1,4 +1,5 @@
 from keras.layers import Concatenate, Conv2D, MaxPooling2D
+from keras.initializers import he_normal
 
 def inception(X, filters, stage, block, seed=None):
 	"""
@@ -38,27 +39,27 @@ def inception(X, filters, stage, block, seed=None):
     # First component: 1x1 Conv
     X_1 = Conv2D(filters = F1, kernel_size = (1,1), strides=(1,1), padding='same', \
     	name=conv_name_base + '1a', \
-    	kernel_initializer = glorot_uniform(seed=seed), \
+    	kernel_initializer = he_normal(seed=seed), \
     	activation='relu')(X)
 
     # Second component: 
     X_2 = Conv2D(filters=F2, kernel_size=(1,1), strides=(1,1), padding='same', \
     	name=conv_name_base + '2a', \
-    	kernel_initializer= glorot_uniform(seed=seed), \
+    	kernel_initializer= he_normal(seed=seed), \
     	)(X)
     X_2 = Conv2D(filters=F2, kernel_size=(3,3), strides=(1,1), padding='same', \
     	name=conv_name_base + '2b', \
-    	kernel_initializer= glorot_uniform(seed=seed), \
+    	kernel_initializer= he_normal(seed=seed), \
     	activation='relu')(X_2)
 
     # Third component:
     X_3 = Conv2D(filters=F3, kernel_size=(1,1), strides=(1,1), padding='same', \
     	name=conv_name_base + '3a', \
-    	kernel_initializer= glorot_uniform(seed=seed), \
+    	kernel_initializer= he_normal(seed=seed), \
     	)(X)
     X_3 = Conv2D(filters=F3, kernel_size=(5,5), strides=(1,1), padding='same', \
     	name=conv_name_base + '3b', \
-    	kernel_initializer= glorot_uniform(seed=seed), \
+    	kernel_initializer= he_normal(seed=seed), \
     	activation='relu')(X_3)
 
     # Fourth component:
@@ -66,7 +67,7 @@ def inception(X, filters, stage, block, seed=None):
     	name=conv_name_base + '4a')(X)
     X_4 = Conv2D(filters=F4, kernel_size=(1,1), strides=(1,1), padding='same', \
     	name=conv_name_base + '4b', \
-    	kernel_initializer= glorot_uniform(seed=seed), \
+    	kernel_initializer= he_normal(seed=seed), \
     	activation='relu')(X_4)
 
     # Concatenate the four components:

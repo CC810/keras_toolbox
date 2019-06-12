@@ -1,7 +1,7 @@
 
 from keras import layers
 from keras.layers import Add, Activation, BatchNormalization, Flatten, Conv2D
-from keras.initializers import glorot_uniform
+from keras.initializers import he_normal
 
 
 def identity_block_3(X, f, filters, stage, block, seed=None):
@@ -36,20 +36,20 @@ def identity_block_3(X, f, filters, stage, block, seed=None):
     
     # First component of main path
     X = Conv2D(filters = F1, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2a', \
-               kernel_initializer = glorot_uniform(seed=seed))(X) # glorot_uniform = Xavier initializer
+               kernel_initializer = he_normal(seed=seed))(X) # He initializer: better for relu activation
     X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
     X = Activation('relu')(X)
     
     
     # Second component of main path
     X = Conv2D(filters = F2, kernel_size = (f,f), strides = (1,1), padding = 'same', name = conv_name_base + '2b', \
-              kernel_initializer = glorot_uniform(seed=seed))(X)
+              kernel_initializer = he_normal(seed=seed))(X)
     X = BatchNormalization(axis = 3, name = bn_name_base + '2b')(X)
     X = Activation('relu')(X)
 
     # Third component of main path
     X = Conv2D(filters = F3, kernel_size = (1,1), strides= (1,1), padding = 'valid', name = conv_name_base + '2c', \
-              kernel_initializer = glorot_uniform(seed=seed))(X)
+              kernel_initializer = he_normal(seed=seed))(X)
     X = BatchNormalization(axis = 3, name = bn_name_base + '2c')(X)
 
     # Final step: Add shortcut value to main path, and pass it through a RELU activation
@@ -90,13 +90,13 @@ def identity_block_2(X, f, filters, stage, block, seed=None):
     
     # First component of main path
     X = Conv2D(filters = F1, kernel_size = (1, 1), strides = (1,1), padding = 'valid', name = conv_name_base + '2a', \
-               kernel_initializer = glorot_uniform(seed=seed))(X) # glorot_uniform = Xavier initializer
+               kernel_initializer = he_normal(seed=seed))(X)
     X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
     X = Activation('relu')(X)
     
     # Second component of main path
     X = Conv2D(filters = F2, kernel_size = (f,f), strides = (1,1), padding = 'same', name = conv_name_base + '2b', \
-              kernel_initializer = glorot_uniform(seed=seed))(X)
+              kernel_initializer = he_normal(seed=seed))(X)
     X = BatchNormalization(axis = 3, name = bn_name_base + '2b')(X)
 
     # Final step: Add shortcut value to main path, and pass it through a RELU activation
@@ -142,24 +142,24 @@ def convolutional_block_3(X, f, filters, stage, block, s = 2, seed=None):
 
     ##### MAIN PATH #####
     # First component of main path 
-    X = Conv2D(F1, (1, 1), strides = (s,s), name = conv_name_base + '2a', kernel_initializer = glorot_uniform(seed=seed))(X)
+    X = Conv2D(F1, (1, 1), strides = (s,s), name = conv_name_base + '2a', kernel_initializer = he_normal(seed=seed))(X)
     X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
     X = Activation('relu')(X)
     
     # Second component of main path 
     X = Conv2D(filters=F2, kernel_size=(f,f), strides=(1,1), padding='same', name= conv_name_base + '2b', \
-             kernel_initializer = glorot_uniform(seed=seed))(X) 
+             kernel_initializer = he_normal(seed=seed))(X) 
     X = BatchNormalization(axis=3, name= bn_name_base + '2b')(X)
     X = Activation('relu')(X)
 
     # Third component of main path 
     X = Conv2D(filters=F3, kernel_size=(1,1), strides=(1,1), padding='valid', name= conv_name_base + '2c', \
-               kernel_initializer = glorot_uniform(seed=seed))(X) 
+               kernel_initializer = he_normal(seed=seed))(X) 
     X = BatchNormalization(axis=3, name= bn_name_base + '2c')(X)
 
     ##### SHORTCUT PATH #### 
     X_shortcut = Conv2D(filters=F3, kernel_size=(1,1), strides=(s,s), padding='valid',name=conv_name_base + '1', \
-                       kernel_initializer = glorot_uniform(seed=seed))((X_shortcut)) 
+                       kernel_initializer = he_normal(seed=seed))((X_shortcut)) 
     X_shortcut = BatchNormalization(axis=3, name= bn_name_base + '1')((X_shortcut))
 
     # Final step: Add shortcut value to main path, and pass it through a RELU activation (≈2 lines)

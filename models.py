@@ -4,14 +4,14 @@ from keras.layers import Input, ZeroPadding2D, Conv2D, BatchNormalization, Activ
 from keras.models import Model
 
 
-def ResNet50(input_shape = (64, 64, 3), classes):
+def ResNet50(input_shape, classes):
     """
     Implementation of the popular ResNet50 the following architecture with residual blocks of 3 layers:
     CONV2D -> BATCHNORM -> RELU -> MAXPOOL -> CONVBLOCK -> IDBLOCK*2 -> CONVBLOCK -> IDBLOCK*3
     -> CONVBLOCK -> IDBLOCK*5 -> CONVBLOCK -> IDBLOCK*2 -> AVGPOOL -> TOPLAYER
 
     Arguments:
-    input_shape -- shape of the images of the dataset
+    input_shape -- shape of the images of the dataset, for example (64,64,3)
     classes -- integer, number of classes
 
     Returns:
